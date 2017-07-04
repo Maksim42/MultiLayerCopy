@@ -6,13 +6,15 @@ from gimpfu import *
 def plugin_func(image, active_layer, shiftX, shiftY):
 	pdb.gimp_context_push()
 	pdb.gimp_image_undo_group_start(image)
+	selection = pdb.gimp_selection_save(image)
 	
 	layerList = image.layers
-	#layer = pdb.gimp_image_get_active_layer(image) #layer for
 	for layer in layerList:
 		if pdb.gimp_item_get_linked(layer):
 			CopySelection(image, layer, [shiftX, shiftY])
+			pdb.gimp_image_select_item(image, 2, selection)
 	
+	pdb.gimp_image_remove_channel(image, selection)
 	pdb.gimp_image_undo_group_end(image)
 	pdb.gimp_context_pop()
 
