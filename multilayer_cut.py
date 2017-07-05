@@ -19,7 +19,7 @@ def plugin_func(image, active_layer, shiftX, shiftY):
 	pdb.gimp_context_pop()
 
 def CopySelection(image, layer, offset):
-	pdb.gimp_edit_copy(layer)
+	pdb.gimp_edit_cut(layer)
 	float_layer = pdb.gimp_edit_paste(layer, FALSE)
 	float_layer.translate(offset[0], offset[1])
 	
@@ -31,13 +31,13 @@ def CopySelection(image, layer, offset):
 	pdb.gimp_image_merge_down(image, copy_layer, 1)
 
 register(
-					"python-fu-multilayer-copy",
-					"Копирует и вставляет на связаных слоях",
-					"Копирует выделенную область на связаных слоях и вставляет",
+					"python-fu-multilayer-cut",
+					"Вырезает и вставляет одновременно на связаных слоях",
+					"Вырезает выделенную область на связаных слоях и вставляет",
 					"Максим Ломако",
 					"Максим Ломако (maksim.lomako@gmail.com)",
 					"05.07.2017",
-					"Multilayer Copy",
+					"Multilayer Cut",
 					"*",
 					[
 							(PF_IMAGE, "image", "Исходное изображение", None),
