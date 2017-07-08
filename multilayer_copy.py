@@ -41,15 +41,21 @@ def RunOnLinkedLayers(func, args):
 
 def SelectionCopy(args):
 	layer = args["layer"]
+	image = args["image"]
+	layerName = layer.name
 	
 	pdb.gimp_edit_copy(layer)
-	PasteFloating(args["image"], layer, args["offset"])
+	PasteFloating(image, layer, args["offset"])
+	LinkedLayer(image, layerName)
 
 def SelectionCut(args):
 	layer = args["layer"]
+	image = args["image"]
+	layerName = layer.name
 	
 	pdb.gimp_edit_cut(layer)
-	PasteFloating(args["image"], layer, args["offset"])
+	PasteFloating(image, layer, args["offset"])
+	LinkedLayer(image, layerName)
 
 def PasteFloating(image, layer, offset):
 	float_layer = pdb.gimp_edit_paste(layer, FALSE)
@@ -61,6 +67,10 @@ def PasteFloating(image, layer, offset):
 	while pdb.gimp_image_get_layer_position(image, layer) > (pdb.gimp_image_get_layer_position(image, copy_layer) + 1):
 		pdb.gimp_image_lower_item(image, copy_layer)
 	pdb.gimp_image_merge_down(image, copy_layer, 1)
+
+def LinkedLayer(image, layerName):
+	layer = pdb.gimp_image_get_layer_by_name(image, layerName)
+	pdb.gimp_item_set_linked(layer, TRUE)
 
 register(
 					"python-fu-multilayer-copy",
